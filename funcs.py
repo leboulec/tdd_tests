@@ -1,2 +1,5 @@
 def max_int(a,b):
-	return -1
+	if a < b :
+		return b
+	else :
+		return a
