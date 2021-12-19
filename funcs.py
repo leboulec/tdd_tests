@@ -13,6 +13,8 @@ def min_int(a,b):
 """ La médiane renvoit la valeur basse
 """
 def mediane_int(l):
+	if (l == []):
+		return None
 	tmp = l
 	tmp.sort()
 	lon = len(tmp)
