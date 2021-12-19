@@ -20,6 +20,7 @@ class TestFuncs(unittest.TestCase):
 		self.assertEqual(funcs.mediane_int([-1, -2, -10]), -2)
 		self.assertEqual(funcs.mediane_int([10]), 10)
 		self.assertEqual(funcs.mediane_int([0, -3, 8, 7]), 0)
+		self.assertEqual(funcs.mediane_int([]), None)
 
 if __name__ == '__main__':
 	unittest.main()
