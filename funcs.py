@@ -9,3 +9,6 @@ def min_int(a,b):
         return a
     else:
         return b
+
+def mediane_int(l):
+    pass
