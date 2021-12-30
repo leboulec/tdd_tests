@@ -31,4 +31,11 @@ def moyenne_int(l):
 	return moyenne
 
 def ecart_type_int(list):
-	return -1
+	if (list == []):
+		return None
+
+	mean = sum(list) / len(list)
+	var = sum((l-mean)**2 for l in list) / len(list)
+	st_dev = math.sqrt(var)
+
+	return st_dev
