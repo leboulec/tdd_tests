@@ -22,5 +22,16 @@ class TestFuncs(unittest.TestCase):
 		self.assertEqual(funcs.mediane_int([0, -3, 8, 7]), 0)
 		self.assertEqual(funcs.mediane_int([]), None)
 
+	def test_moyenne_int(self):
+		self.assertEqual(funcs.moyenne_int([1, 5, 3, 2, 8]), 3.8)
+		self.assertEqual(funcs.moyenne_int([-1, -1, -10]), -4)
+		self.assertEqual(funcs.moyenne_int([10, 10]), 10)
+		self.assertEqual(funcs.moyenne_int([3, -3, 8, -8]), 0)
+
 if __name__ == '__main__':
 	unittest.main()
+
+
+#git push -u origin moyenne
+#git checkout main
+#git merge moyenne

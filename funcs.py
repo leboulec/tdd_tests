@@ -22,3 +22,8 @@ def mediane_int(l):
 		return tmp[len(tmp) // 2 - 1]
 	else:
 		return tmp[len(tmp) // 2]
+
+def moyenne_int(l):
+	moyenne = float(sum(l)/len(l))
+	return moyenne
+
