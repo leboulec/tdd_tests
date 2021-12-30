@@ -10,10 +10,10 @@ class TestFuncs(unittest.TestCase):
 		self.assertEqual(funcs.max_int(0,0),0)
 
 	def test_moyenne_int(self):
-		self.assertEqual(funcs.max_int(0,2),1)
-		self.assertEqual(funcs.max_int(-1,-5),-3)
-		self.assertEqual(funcs.max_int(-1,3),1)
-		self.assertEqual(funcs.max_int(0,0),0)
+		self.assertEqual(funcs.moyenne_int([1, 5, 3, 2, 8]), 3.8)
+		self.assertEqual(funcs.moyenne_int([-1, -1, -10]), -4)
+		self.assertEqual(funcs.moyenne_int([10, 10]), 10)
+		self.assertEqual(funcs.moyenne_int([3, -3, 8, -8]), 0)
 
 if __name__ == '__main__':
 	unittest.main()
