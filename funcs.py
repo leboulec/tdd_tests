@@ -52,3 +52,6 @@ def is_geometric(li):
 		if (li[i]/float(li[i-1])) != ratio:
 			return False
 	return True
+
+def is_arithmetic(li):
+	return -1
