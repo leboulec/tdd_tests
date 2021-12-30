@@ -65,3 +65,6 @@ def is_arithmetic(li):
 		if (li[i] - float(li[i-1])) != diff:
 			return False
 	return True
+
+def get_next_geometric(li, n):
+	return -1
