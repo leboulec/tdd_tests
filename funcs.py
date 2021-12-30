@@ -54,4 +54,14 @@ def is_geometric(li):
 	return True
 
 def is_arithmetic(li):
-	return -1
+	if (li == []):
+		return None
+
+	if len(li) <= 1:
+		return True
+
+	diff = li[1] - float(li[0])
+	for i in range(1, len(li)):
+		if (li[i] - float(li[i-1])) != diff:
+			return False
+	return True
