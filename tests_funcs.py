@@ -8,7 +8,7 @@ class TestFuncs(unittest.TestCase):
 		self.assertEqual(funcs.max_int(-1,-5),-1)
 		self.assertEqual(funcs.max_int(-1,2),2)
 		self.assertEqual(funcs.max_int(0,0),0)
-    
+
 	def test_min_int(self):
 		self.assertEqual(funcs.min_int(0,2),0)
 		self.assertEqual(funcs.min_int(-1,-5),-5)
@@ -27,6 +27,11 @@ class TestFuncs(unittest.TestCase):
 		self.assertEqual(funcs.moyenne_int([-1, -1, -10]), -4)
 		self.assertEqual(funcs.moyenne_int([10, 10]), 10)
 		self.assertEqual(funcs.moyenne_int([3, -3, 8, -8]), 0)
+
+	def test_ecart_type_int(self):
+		self.assertEqual(funcs.ecart_type_int([10, 8, 10, 8, 8, 4]), 2)
+		self.assertEqual(funcs.ecart_type_int([3, 3, 3, 3]), 0)
+		self.assertEqual(funcs.ecart_type_int([]), None)
 
 if __name__ == '__main__':
 	unittest.main()

@@ -1,3 +1,6 @@
+# coding=utf-8
+import math
+
 def max_int(a,b):
 	if a < b :
 		return b
@@ -27,3 +30,5 @@ def moyenne_int(l):
 	moyenne = float(sum(l)/len(l))
 	return moyenne
 
+def ecart_type_int(list):
+	return -1
