@@ -27,7 +27,7 @@ def mediane_int(l):
 		return tmp[len(tmp) // 2]
 
 def moyenne_int(l):
-	moyenne = float(sum(l)/len(l))
+	moyenne = sum(l)/float(len(l))
 	return moyenne
 
 def ecart_type_int(list):
@@ -39,3 +39,6 @@ def ecart_type_int(list):
 	st_dev = math.sqrt(var)
 
 	return st_dev
+
+def is_geometric(li):
+	return -1
