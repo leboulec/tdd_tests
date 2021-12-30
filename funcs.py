@@ -65,3 +65,22 @@ def is_arithmetic(li):
 		if (li[i] - float(li[i-1])) != diff:
 			return False
 	return True
+
+def get_next_geometric(li, n):
+	if (li == []):
+		return None
+
+	if is_geometric(li) == False:
+		return False
+
+	ratio = li[1]/float(li[0])
+	prec = li[len(li)-1]
+
+	next_val = []
+
+	for i in range(n):
+		val = prec * ratio
+		next_val.append(val)
+		prec = val
+
+	return True, next_val
