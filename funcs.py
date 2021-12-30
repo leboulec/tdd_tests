@@ -5,4 +5,5 @@ def max_int(a,b):
 		return a
 
 def moyenne_int(l):
-	return -1
+	moyenne = float(sum(l)/len(l))
+	return moyenne
