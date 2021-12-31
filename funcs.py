@@ -86,4 +86,20 @@ def get_next_geometric(li, n):
 	return True, next_val
 
 def get_next_arithmetic(li, n):
-	return -1
+	if (li == []):
+		return None
+
+	if is_arithmetic(li) == False:
+		return False
+
+	diff = li[1] - float(li[0])
+	prec = li[len(li)-1]
+
+	next_val = []
+
+	for i in range(n):
+		val = prec + diff
+		next_val.append(val)
+		prec = val
+
+	return True, next_val
