@@ -84,3 +84,6 @@ def get_next_geometric(li, n):
 		prec = val
 
 	return True, next_val
+
+def get_next_arithmetic(li, n):
+	return -1
