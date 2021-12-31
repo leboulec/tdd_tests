@@ -54,6 +54,13 @@ class TestFuncs(unittest.TestCase):
 		self.assertEqual(funcs.get_next_geometric([10, 5, 2.5, 25], 2), False)
 		self.assertEqual(funcs.get_next_geometric([], 3), None)
 
+	def test_get_next_arithmetic(self):
+		self.assertEqual(funcs.get_next_arithmetic([2, 4, 6, 8], 4), (True, [10, 12, 14, 16]))
+		self.assertEqual(funcs.get_next_arithmetic([7, 5, 3, 1], 2), (True, [-1, -3]))
+		self.assertEqual(funcs.get_next_arithmetic([5, 8, 9, 11], 5), False)
+		self.assertEqual(funcs.get_next_arithmetic([2, 4, 6, 10], 2), False)
+		self.assertEqual(funcs.get_next_arithmetic([], 3), None)
+
 
 if __name__ == '__main__':
 	unittest.main()
