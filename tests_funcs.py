@@ -1,6 +1,7 @@
 import funcs
 import unittest
 import sqlite3
+import os
 
 class TestFuncs(unittest.TestCase):
 
@@ -32,13 +33,15 @@ class TestFuncs(unittest.TestCase):
 		conn = sqlite3.connect('test.db')
 		conn.row_factory = sqlite3.Row
 		c = conn.cursor()
+
+		c.execute("CREATE TABLE users (id INTEGER primary key autoincrement, username TEXT NOT NULL, password TEXT NOT NULL, spublickey TEXT NOT NULL, sprivatekey TEXT NOT NULL, epublickey TEXT NOT NULL, eprivatekey TEXT NOT NULL)")
 		
 		key = "a" * 128
 		# TEST OK
 		res = funcs.add_user('Clement', 'Password!1', key, key, key, key)
 		self.assertEqual(res, 'Clement')
 		c.execute("SELECT * FROM users WHERE username='Clement'")
-		rows.fetchall()
+		rows = c.fetchall()
 		for row in rows:
 			self.assertEqual(row['username'], 'Clement')
 			self.assertEqual(row['password'], 'Password!1')
