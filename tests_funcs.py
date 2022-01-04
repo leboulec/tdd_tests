@@ -44,9 +44,12 @@ class TestFuncs(unittest.TestCase):
 			self.assertEqual(row['password'], 'Password!1')
 			self.assertEqual(row['spublickey'], key)
 
+		conn.commit()
+		conn.close()
+
 		# TEST UNIQUE
 		key = "b" * 128
-		res = funcs.add_user('Clement', 'HUhdeu heufuq!8', key, key, key, key)
+		res = funcs.add_user('Clement', 'HUhdeu#heufuq!8', key, key, key, key)
 		self.assertEqual(res, None)
 
 		# TEST PASSWORD
@@ -63,14 +66,12 @@ class TestFuncs(unittest.TestCase):
 
 		# TEST TAILLE KEY
 		key = "b" * 127
-		res = funcs.add_user('toto', 'HUhdeu heufuq!8', key, key, key, key)
+		res = funcs.add_user('toto', 'HUhdeu#heufuq!8', key, key, key, key)
 		self.assertEqual(res, None)
 		key = "b" * 324
-		res = funcs.add_user('toto', 'HUhdeu heufuq!8', key, key, key, key)
+		res = funcs.add_user('toto', 'HUhdeu#heufuq!8', key, key, key, key)
 		self.assertEqual(res, None)
 
-		conn.commit()
-		conn.close()
 
 if __name__ == '__main__':
 	unittest.main()
