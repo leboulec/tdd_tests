@@ -98,6 +98,30 @@ class TestFuncs(unittest.TestCase):
 		self.assertEqual(funcs.login('Julie', 'Swordpass!1'), True)
 		self.assertEqual(funcs.login('Julie', 'Swordpass!'), False)
 
+	def test_get_keys(self):
+		try:
+			os.remove('test.db')
+		except:
+			pass
+		conn = sqlite3.connect('test.db')
+		conn.row_factory = sqlite3.Row
+		c = conn.cursor()
+
+		c.execute("CREATE TABLE users (id INTEGER primary key autoincrement, username TEXT NOT NULL, password TEXT NOT NULL, spublickey TEXT NOT NULL, sprivatekey TEXT NOT NULL, epublickey TEXT NOT NULL, eprivatekey TEXT NOT NULL)")
+		conn.commit()
+		conn.close()
+
+		key1 = "cgtCQ94Nxf0qz4md3oxScISAU4R14PADIzYzqXL6Z2lud7tq7Ptz78GtDB54z1cZoeNENpiNwn8PhI3E5eNEDE0zS5ebQ8tZK57sMh0tZJg5u836A2wUXSylU6i6pq3L"
+		key2 = "HPRu7erX3L2RJ6uLS967t870eS7NnMdYSwmkZpGLCH20RD7IiKN4St3e2RES9cxmav7msCz3lEJs3zRth2lAHI8hCVBtk0OJ06y9a76gk39NF2Y4iKdMnE0ofx3L0XxA"
+		key3 = "75vN85a29NtoCiXve57ACvjsf354Ve3W2ew9PDJwG6tj8byjcn3ZtGB1NurmKVElqH8GTGrhSlvbcE7obgfVHMtIowh3k9mPboLBu3E8v2CVQYVrkCD014ThX9rCn9TL"
+		key4 = "LJ325iV2IO52n0dCxfohO9wCUKP8D8gnvb30ozYZiaav8Z10MLDDn7kT3SttiCeWn229hkI1HZkqQki20dg1MeaCu5CLqj5eSEjqimcd9yEIR9Pa2Jja3hTZXm4F3y8u"
+		funcs.add_user('Clement', 'Password!1', key1, key2, key3, key4)
+		keys = funcs.get_keys("Clement")
+		self.assertEqual(keys["spublickey"], key1)
+		self.assertEqual(keys["sprivatekey"], key2)
+		self.assertEqual(keys["epublickey"], key3)
+		self.assertEqual(keys["eprivatekey"], key4)
+
 
 if __name__ == '__main__':
 	unittest.main()
