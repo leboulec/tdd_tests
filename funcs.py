@@ -57,4 +57,14 @@ def add_user(username, password, spublickey, sprivatekey, epublickey, eprivateke
 	return username
 
 def login(username, password):
-	pass
+	conn = sqlite3.connect('test.db')
+	conn.row_factory = sqlite3.Row
+	c = conn.cursor()
+	query = "SELECT * FROM users WHERE username='" + username + "'"
+	c.execute(query)
+	rows = c.fetchall()
+	for row in rows:
+		if row['password'] == password:
+			return True
+	
+	return False
