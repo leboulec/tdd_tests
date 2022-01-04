@@ -70,4 +70,17 @@ def login(username, password):
 	return False
 
 def get_keys(username):
-	pass
+	conn = sqlite3.connect('test.db')
+	conn.row_factory = sqlite3.Row
+	c = conn.cursor()
+	query = "SELECT * FROM users WHERE username='" + username + "'"
+	c.execute(query)
+	rows = c.fetchall()
+	keys = {}
+	for row in rows:
+		keys["spublickey"] = row["spublickey"]
+		keys["sprivatekey"] = row["sprivatekey"]
+		keys["epublickey"] = row["epublickey"]
+		keys["eprivatekey"] = row["eprivatekey"]
+	
+	return keys
