@@ -22,3 +22,6 @@ def mediane_int(l):
 		return tmp[len(tmp) // 2 - 1]
 	else:
 		return tmp[len(tmp) // 2]
+
+def add_user(username, password, spublickey, sprivatekey, epublickey, eprivatekey):
+    pass
