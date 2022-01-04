@@ -55,3 +55,6 @@ def add_user(username, password, spublickey, sprivatekey, epublickey, eprivateke
 	conn.close()
 		
 	return username
+
+def login(username, password):
+	pass

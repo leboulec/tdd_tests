@@ -74,6 +74,29 @@ class TestFuncs(unittest.TestCase):
 		key = "b" * 324
 		res = funcs.add_user('toto', 'HUhdeu#heufuq!8', key, key, key, key)
 		self.assertEqual(res, None)
+	
+	def test_login(self):
+		# ouverture/initialisation de la base de donnee 
+		try:
+			os.remove('test.db')
+		except:
+			pass
+		conn = sqlite3.connect('test.db')
+		conn.row_factory = sqlite3.Row
+		c = conn.cursor()
+
+		c.execute("CREATE TABLE users (id INTEGER primary key autoincrement, username TEXT NOT NULL, password TEXT NOT NULL, spublickey TEXT NOT NULL, sprivatekey TEXT NOT NULL, epublickey TEXT NOT NULL, eprivatekey TEXT NOT NULL)")
+		conn.commit()
+		conn.close()
+
+		key = "b" * 128
+		funcs.add_user('Clement', 'Password!1', key, key, key, key)
+		funcs.add_user('Julie', 'Swordpass!1', key, key, key, key)
+		self.assertEqual(funcs.login('Clement', 'Password!1'), True)
+		self.assertEqual(funcs.login('Clement', 'NotPassword'), False)
+		self.assertEqual(funcs.login('Clement', 'Swordpass!1'), False)
+		self.assertEqual(funcs.login('Julie', 'Swordpass!1'), True)
+		self.assertEqual(funcs.login('Julie', 'Swordpass!'), False)
 
 
 if __name__ == '__main__':
