@@ -1,5 +1,7 @@
 # coding=utf-8
 import math
+import re
+import sqlite3
 
 def max_int(a,b):
 	if a < b :
@@ -103,3 +105,95 @@ def get_next_arithmetic(li, n):
 		prec = val
 
 	return True, next_val
+def add_user(username, password, spublickey, sprivatekey, epublickey, eprivatekey):
+	# Check password
+	reg = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!#%*?&]{6,20}$"
+	pat = re.compile(reg)
+	mat = re.search(pat, password)
+	if not mat:
+		return None
+	
+	# Check key lenght
+	if len(spublickey) != 128 or len(sprivatekey) != 128 or len(epublickey) != 128 or len(eprivatekey) != 128:
+		return None
+	
+	# Check unique username
+	conn = sqlite3.connect('test.db')
+	conn.row_factory = sqlite3.Row
+	c = conn.cursor()
+
+	query = "SELECT * FROM users WHERE username='" + username + "'"
+	c.execute(query)
+	rows = c.fetchall()
+	if len(rows) != 0:
+		return None
+
+	c.execute("INSERT INTO users (username, password, spublickey, sprivatekey, epublickey, eprivatekey) VALUES(?,?,?,?,?,?)", (username, password, spublickey, sprivatekey, epublickey, eprivatekey))
+
+	conn.commit()
+	conn.close()
+		
+	return username
+
+def login(username, password):
+	conn = sqlite3.connect('test.db')
+	conn.row_factory = sqlite3.Row
+	c = conn.cursor()
+	query = "SELECT * FROM users WHERE username='" + username + "'"
+	c.execute(query)
+	rows = c.fetchall()
+	for row in rows:
+		if row['password'] == password:
+			return True
+	
+	return False
+
+def get_keys(username):
+	conn = sqlite3.connect('test.db')
+	conn.row_factory = sqlite3.Row
+	c = conn.cursor()
+	query = "SELECT * FROM users WHERE username='" + username + "'"
+	c.execute(query)
+	rows = c.fetchall()
+	keys = {}
+	for row in rows:
+		keys["spublickey"] = row["spublickey"]
+		keys["sprivatekey"] = row["sprivatekey"]
+		keys["epublickey"] = row["epublickey"]
+		keys["eprivatekey"] = row["eprivatekey"]
+	
+	return keys
+
+def is_db_corrupted():
+	conn = sqlite3.connect('test.db')
+	conn.row_factory = sqlite3.Row
+	c = conn.cursor()
+	query = "SELECT * FROM users"
+	c.execute(query)
+	rows = c.fetchall()
+	for row in rows:
+		# Check password
+		password = row["password"]
+		reg = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!#%*?&]{6,20}$"
+		pat = re.compile(reg)
+		mat = re.search(pat, password)
+		if not mat:
+			return True
+
+		# Check key lenght
+		spublickey = row["spublickey"]
+		sprivatekey = row["sprivatekey"]
+		epublickey = row["epublickey"]
+		eprivatekey = row["eprivatekey"]
+		if len(spublickey) != 128 or len(sprivatekey) != 128 or len(epublickey) != 128 or len(eprivatekey) != 128:
+			return True
+		
+		# Check uniqueness
+		username = row["username"]
+		query = "SELECT * FROM users WHERE username='" + username + "'"
+		c.execute(query)
+		rows = c.fetchall()
+		if len(rows) > 1:
+			return True
+	
+	return False
