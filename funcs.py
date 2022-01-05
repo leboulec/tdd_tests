@@ -86,4 +86,35 @@ def get_keys(username):
 	return keys
 
 def is_db_corrupted():
-	pass
+	conn = sqlite3.connect('test.db')
+	conn.row_factory = sqlite3.Row
+	c = conn.cursor()
+	query = "SELECT * FROM users"
+	c.execute(query)
+	rows = c.fetchall()
+	for row in rows:
+		# Check password
+		password = row["password"]
+		reg = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!#%*?&]{6,20}$"
+		pat = re.compile(reg)
+		mat = re.search(pat, password)
+		if not mat:
+			return True
+
+		# Check key lenght
+		spublickey = row["spublickey"]
+		sprivatekey = row["sprivatekey"]
+		epublickey = row["epublickey"]
+		eprivatekey = row["eprivatekey"]
+		if len(spublickey) != 128 or len(sprivatekey) != 128 or len(epublickey) != 128 or len(eprivatekey) != 128:
+			return True
+		
+		# Check uniqueness
+		username = row["username"]
+		query = "SELECT * FROM users WHERE username='" + username + "'"
+		c.execute(query)
+		rows = c.fetchall()
+		if len(rows) > 1:
+			return True
+	
+	return False
