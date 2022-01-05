@@ -121,6 +121,57 @@ class TestFuncs(unittest.TestCase):
 		self.assertEqual(keys["sprivatekey"], key2)
 		self.assertEqual(keys["epublickey"], key3)
 		self.assertEqual(keys["eprivatekey"], key4)
+	
+	def test_is_db_corrupted(self):
+		try:
+			os.remove('test.db')
+		except:
+			pass
+		conn = sqlite3.connect('test.db')
+		conn.row_factory = sqlite3.Row
+		c = conn.cursor()
+
+		c.execute("CREATE TABLE users (id INTEGER primary key autoincrement, username TEXT NOT NULL, password TEXT NOT NULL, spublickey TEXT NOT NULL, sprivatekey TEXT NOT NULL, epublickey TEXT NOT NULL, eprivatekey TEXT NOT NULL)")
+
+		self.assertEqual(funcs.is_db_corrupted(), False)
+
+		key = "LJ325iV2IO52n0dCxfohO9wCUKP8D8gnvb30ozYZiaav8Z10MLDDn7kT3SttiCeWn229hkI1HZkqQki20dg1MeaCu5CLqj5eSEjqimcd9yEIR9Pa2Jja3hTZXm4F3y8u"
+		c.execute("INSERT INTO users (username, password, spublickey, sprivatekey, epublickey, eprivatekey) VALUES(?,?,?,?,?,?)", ("Clément", "Password!1", key, key, key, key))
+		conn.commit()
+		conn.close()
+		self.assertEqual(funcs.is_db_corrupted(), False)
+
+		conn = sqlite3.connect('test.db')
+		conn.row_factory = sqlite3.Row
+		c = conn.cursor()
+		key = "LJ325iV2IO52n"
+		c.execute("INSERT INTO users (username, password, spublickey, sprivatekey, epublickey, eprivatekey) VALUES(?,?,?,?,?,?)", ("Clément", "Password!1", key, key, key, key))
+		conn.commit()
+		conn.close()
+		self.assertEqual(funcs.is_db_corrupted(), True)
+
+		conn = sqlite3.connect('test.db')
+		conn.row_factory = sqlite3.Row
+		c = conn.cursor()
+		c.execute("DROP TABLE users")
+		c.execute("CREATE TABLE users (id INTEGER primary key autoincrement, username TEXT NOT NULL, password TEXT NOT NULL, spublickey TEXT NOT NULL, sprivatekey TEXT NOT NULL, epublickey TEXT NOT NULL, eprivatekey TEXT NOT NULL)")
+		key = "LJ325iV2IO52n0dCxfohO9wCUKP8D8gnvb30ozYZiaav8Z10MLDDn7kT3SttiCeWn229hkI1HZkqQki20dg1MeaCu5CLqj5eSEjqimcd9yEIR9Pa2Jja3hTZXm4F3y8u"
+		c.execute("INSERT INTO users (username, password, spublickey, sprivatekey, epublickey, eprivatekey) VALUES(?,?,?,?,?,?)", ("Clément", "Password", key, key, key, key))
+		conn.commit()
+		conn.close()
+		self.assertEqual(funcs.is_db_corrupted(), True)
+
+		conn = sqlite3.connect('test.db')
+		conn.row_factory = sqlite3.Row
+		c = conn.cursor()
+		c.execute("DROP TABLE users")
+		c.execute("CREATE TABLE users (id INTEGER primary key autoincrement, username TEXT NOT NULL, password TEXT NOT NULL, spublickey TEXT NOT NULL, sprivatekey TEXT NOT NULL, epublickey TEXT NOT NULL, eprivatekey TEXT NOT NULL)")
+		key = "LJ325iV2IO52n0dCxfohO9wCUKP8D8gnvb30ozYZiaav8Z10MLDDn7kT3SttiCeWn229hkI1HZkqQki20dg1MeaCu5CLqj5eSEjqimcd9yEIR9Pa2Jja3hTZXm4F3y8u"
+		c.execute("INSERT INTO users (username, password, spublickey, sprivatekey, epublickey, eprivatekey) VALUES(?,?,?,?,?,?)", ("Clément", "Password!1", key, key, key, key))
+		c.execute("INSERT INTO users (username, password, spublickey, sprivatekey, epublickey, eprivatekey) VALUES(?,?,?,?,?,?)", ("Clément", "Password!2", key, key, key, key))
+		conn.commit()
+		conn.close()
+		self.assertEqual(funcs.is_db_corrupted(), True)
 
 
 if __name__ == '__main__':

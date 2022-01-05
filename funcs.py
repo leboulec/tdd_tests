@@ -84,3 +84,6 @@ def get_keys(username):
 		keys["eprivatekey"] = row["eprivatekey"]
 	
 	return keys
+
+def is_db_corrupted():
+	pass
